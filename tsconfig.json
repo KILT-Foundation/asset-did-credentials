@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "typeRoots": ["./node_modules/@types"],
+    "strict": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["./src/**/*"]
+}

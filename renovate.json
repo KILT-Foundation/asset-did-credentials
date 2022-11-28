@@ -1,0 +1,11 @@
+{
+  "extends": ["config:base"],
+  "rangeStrategy": "bump",
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["parcel"],
+      "groupName": "parcel"
+    }
+  ]
+}
