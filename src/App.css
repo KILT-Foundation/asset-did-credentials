@@ -1,0 +1,74 @@
+:root {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  margin-inline: calc((100% - min(90%, 1200rem / 16)) / 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.urlLabel {
+  display: flex;
+  gap: 5rem;
+  margin: 1rem;
+  width: 80%;
+}
+
+.urlInput {
+  flex: 1;
+}
+
+.line {
+  width: 100%;
+  margin: 3rem 0;
+}
+
+.assetDidHeading {
+  text-align: center;
+}
+
+.assetDidBreakdown {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-block: 2rem;
+}
+
+.outputData {
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.outputDataField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  overflow: hidden;
+}
+
+.dataValue {
+  margin: 0.25rem 0 0;
+  border: 1px solid black;
+  height: 1.25rem;
+  padding: 0 1rem;
+  min-width: 7rem;
+  text-align: center;
+}
+
+.separator {
+  font-weight: bold;
+}
+
+.invalid {
+  color: red;
+}
