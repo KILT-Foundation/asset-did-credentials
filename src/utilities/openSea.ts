@@ -10,7 +10,7 @@ type OpenSeaChain =
   | 'matic'
   | 'optimism';
 
-const openSeaChainIds: Record<OpenSeaChain, string> = {
+export const openSeaChainIds: Record<OpenSeaChain, string> = {
   arbitrum: 'eip155:42161',
   avalanche: 'eip155:43114',
   bsc: 'eip155:56',

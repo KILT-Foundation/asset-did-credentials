@@ -9,6 +9,7 @@ import { parse, validateUri } from '@kiltprotocol/asset-did';
 import {
   getOpenSeaUrl,
   isOpenSeaUrl,
+  openSeaChainIds,
   parseOpenSeaUrl,
 } from './utilities/openSea';
 import { useBooleanState } from './utilities/useBooleanState';
@@ -149,22 +150,33 @@ export function App() {
             Chain ID
             <input
               required
+              list="chainIds"
               className="didInputValue"
               name="chainId"
               value={chainId}
               onChange={handleDidInput}
             />
+            <datalist id="chainIds">
+              {Object.values(openSeaChainIds).map((chainId) => (
+                <option key={chainId} value={chainId} />
+              ))}
+            </datalist>
           </label>
           .
           <label className="didInputLabel">
             Token Standard
             <input
               required
+              list="standards"
               className="didInputValue"
               name="assetNamespace"
               value={assetNamespace}
               onChange={handleDidInput}
             />
+            <datalist id="standards">
+              <option value="erc721" />
+              <option value="erc1155" />
+            </datalist>
           </label>
           :
           <label className="didInputLabel">
