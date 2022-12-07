@@ -1,6 +1,8 @@
 import { parse } from '@kiltprotocol/asset-did';
 import { AssetDidUri } from '@kiltprotocol/types';
 
+import { invert } from 'lodash-es';
+
 type OpenSeaChain =
   | 'arbitrum'
   | 'avalanche'
@@ -59,10 +61,13 @@ export function parseOpenSeaUrl(link: OpenSeaUrl) {
 export function getOpenSeaUrl(did: AssetDidUri) {
   const { chainId, assetReference, assetInstance } = parse(did);
 
-  if (Object.values(openSeaChainIds).includes(chainId)) {
-    const chainName = (
-      Object.keys(openSeaChainIds) as (keyof typeof openSeaChainIds)[]
-    ).find((key) => openSeaChainIds[key] === chainId);
+  const openSeaChainNames = invert(openSeaChainIds) as Record<
+    string,
+    OpenSeaChain
+  >;
+
+  const chainName = openSeaChainNames[chainId];
+  if (chainName) {
     return `https://opensea.io/assets/${chainName}/${assetReference}/${assetInstance}`;
   }
 }
