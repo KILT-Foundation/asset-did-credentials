@@ -1,7 +1,11 @@
 import { ChangeEvent, FormEvent, useCallback, useMemo, useState } from 'react';
 
+import { AssetDidUri } from '@kiltprotocol/types';
+
 import './App.css';
-import { AssetDid, isAssetDid, parseAssetDid } from './utilities/assetDid';
+
+import { parse, validateUri } from '@kiltprotocol/asset-did';
+
 import {
   getOpenSeaUrl,
   isOpenSeaUrl,
@@ -9,25 +13,35 @@ import {
 } from './utilities/openSea';
 import { useBooleanState } from './utilities/useBooleanState';
 
+function isAssetDidUri(uri: string): uri is AssetDidUri {
+  try {
+    validateUri(uri);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 const initialValues = {
-  chainID: '',
+  chainId: '',
   assetNamespace: '',
   assetReference: '',
-  assetID: '',
+  assetInstance: '',
 };
 
 export function App() {
   const [assetDidInput, setAssetDidInput] = useState(initialValues);
-  const { chainID, assetNamespace, assetReference, assetID } = assetDidInput;
+  const { chainId, assetNamespace, assetReference, assetInstance } =
+    assetDidInput;
 
-  const [assetDid, setAssetDid] = useState<AssetDid>();
+  const [assetDidUri, setAssetDidUri] = useState<AssetDidUri>();
 
   const openSeaUrl = useMemo(() => {
-    if (!assetDid || !assetID) {
+    if (!assetDidUri || !assetInstance) {
       return;
     }
-    return getOpenSeaUrl(assetDid);
-  }, [assetDid, assetID]);
+    return getOpenSeaUrl(assetDidUri);
+  }, [assetDidUri, assetInstance]);
 
   const urlInputError = useBooleanState();
   const didInputError = useBooleanState();
@@ -37,12 +51,19 @@ export function App() {
       event.preventDefault();
       urlInputError.off();
       didInputError.off();
-      setAssetDid(undefined);
+      setAssetDidUri(undefined);
 
       const url = event.currentTarget.value;
 
-      if (isAssetDid(url)) {
-        setAssetDidInput(parseAssetDid(url));
+      if (isAssetDidUri(url)) {
+        const { chainId, assetNamespace, assetReference, assetInstance } =
+          parse(url);
+        setAssetDidInput({
+          chainId,
+          assetNamespace,
+          assetReference,
+          assetInstance: assetInstance || '',
+        });
         return;
       }
 
@@ -61,7 +82,7 @@ export function App() {
     (event: ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
       didInputError.off();
-      setAssetDid(undefined);
+      setAssetDidUri(undefined);
 
       const key = event.currentTarget.name;
       const value = event.currentTarget.value;
@@ -77,17 +98,17 @@ export function App() {
     (event: FormEvent) => {
       event.preventDefault();
       didInputError.off();
-      setAssetDid(undefined);
+      setAssetDidUri(undefined);
 
-      const { chainID, assetNamespace, assetReference, assetID } =
+      const { chainId, assetNamespace, assetReference, assetInstance } =
         assetDidInput;
 
-      const string = assetID
-        ? `did:asset:${chainID}.${assetNamespace}:${assetReference}:${assetID}`
-        : `did:asset:${chainID}.${assetNamespace}:${assetReference}`;
+      const string = assetInstance
+        ? `did:asset:${chainId}.${assetNamespace}:${assetReference}:${assetInstance}`
+        : `did:asset:${chainId}.${assetNamespace}:${assetReference}`;
 
-      if (isAssetDid(string)) {
-        setAssetDid(string);
+      if (isAssetDidUri(string)) {
+        setAssetDidUri(string);
       } else {
         didInputError.on();
       }
@@ -95,7 +116,7 @@ export function App() {
     [assetDidInput, didInputError],
   );
 
-  const disabled = !chainID || !assetNamespace || !assetReference;
+  const disabled = !chainId || !assetNamespace || !assetReference;
 
   return (
     <section className="container">
@@ -129,8 +150,8 @@ export function App() {
             <input
               required
               className="didInputValue"
-              name="chainID"
-              value={chainID}
+              name="chainId"
+              value={chainId}
               onChange={handleDidInput}
             />
           </label>
@@ -163,8 +184,8 @@ export function App() {
             </p>
             <input
               className="didInputValue"
-              name="assetID"
-              value={assetID}
+              name="assetInstance"
+              value={assetInstance}
               onChange={handleDidInput}
             />
           </label>
@@ -178,11 +199,11 @@ export function App() {
       <output form="form">
         {didInputError.current && <p className="error">Invalid input</p>}
 
-        {!didInputError.current && assetDid && (
+        {!didInputError.current && assetDidUri && (
           <section>
-            <dl className="assetDid">
+            <dl className="assetDidUri">
               <dt>Asset DID:</dt>
-              <dd>{assetDid}</dd>
+              <dd>{assetDidUri}</dd>
             </dl>
 
             {openSeaUrl && (
