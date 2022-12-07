@@ -1,5 +1,5 @@
 import { parse } from '@kiltprotocol/asset-did';
-import { AssetDidUri } from '@kiltprotocol/types';
+import { AssetDidUri, Caip2ChainId } from '@kiltprotocol/types';
 
 import { invert } from 'lodash-es';
 
@@ -12,7 +12,7 @@ type OpenSeaChain =
   | 'matic'
   | 'optimism';
 
-export const openSeaChainIds: Record<OpenSeaChain, string> = {
+export const openSeaChainIds: Record<OpenSeaChain, Caip2ChainId> = {
   arbitrum: 'eip155:42161',
   avalanche: 'eip155:43114',
   bsc: 'eip155:56',
@@ -62,7 +62,7 @@ export function getOpenSeaUrl(did: AssetDidUri) {
   const { chainId, assetReference, assetInstance } = parse(did);
 
   const openSeaChainNames = invert(openSeaChainIds) as Record<
-    string,
+    Caip2ChainId,
     OpenSeaChain
   >;
 
