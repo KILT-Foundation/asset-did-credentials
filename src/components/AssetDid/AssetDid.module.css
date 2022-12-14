@@ -95,3 +95,7 @@ body {
   display: flex;
   color: green;
 }
+
+.assetDidUriValue {
+  word-break: break-word;
+}

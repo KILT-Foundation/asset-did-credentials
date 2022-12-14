@@ -228,7 +228,7 @@ export function AssetDid() {
           <output form="form" className={styles.assetDid}>
             <dl className={styles.assetDidUri}>
               <dt>Asset DID:</dt>
-              <dd>{assetDidUri}</dd>
+              <dd className={styles.assetDidUriValue}>{assetDidUri}</dd>
             </dl>
 
             {openSeaUrl && (

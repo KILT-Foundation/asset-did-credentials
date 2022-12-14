@@ -13,5 +13,6 @@ declare const styles: {
   readonly error: string;
   readonly assetDid: string;
   readonly assetDidUri: string;
+  readonly assetDidUriValue: string;
 };
 export = styles;
