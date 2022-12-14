@@ -1,9 +1,20 @@
 import { createRoot } from 'react-dom/client';
 
 import { AssetDid } from './components/AssetDid/AssetDid';
+import { initKiltSDK } from './utilities/initKiltSDK';
 
-const container = document.getElementById('root') as HTMLElement;
+(async () => {
+  const endpoint = process.env.CHAIN_ENDPOINT;
 
-const root = createRoot(container);
+  if (!endpoint) {
+    throw new Error('Blockchain endpoint not defined');
+  }
 
-root.render(<AssetDid />);
+  await initKiltSDK();
+
+  const container = document.getElementById('root') as HTMLElement;
+
+  const root = createRoot(container);
+
+  root.render(<AssetDid />);
+})();

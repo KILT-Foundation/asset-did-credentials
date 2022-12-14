@@ -9,9 +9,10 @@ import {
 import { find } from 'lodash-es';
 import { FormEvent, Fragment, useCallback, useEffect, useState } from 'react';
 
+import { ConfigService } from '@kiltprotocol/config';
+
 import * as styles from './AssetDidActions.module.css';
 
-import { getApi } from '../../utilities/api';
 import { emailCType } from '../../utilities/cTypes';
 import { getSubscanHost } from '../../utilities/subscanHost';
 
@@ -31,7 +32,7 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
 
   useEffect(() => {
     (async () => {
-      const api = await getApi();
+      const api = ConfigService.get('api');
       const genesisHash = api.genesisHash.toHex();
       await web3Enable('Asset DIDs');
       const allAccounts = await web3Accounts();
@@ -67,7 +68,7 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
       setSubscanUrl('');
 
       try {
-        const api = await getApi();
+        const api = ConfigService.get('api');
 
         const claim: IAssetClaim = {
           cTypeHash: CType.idToChain(emailCType.$id),
