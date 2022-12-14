@@ -10,8 +10,8 @@ declare const styles: {
   readonly didInputValue: string;
   readonly tokenID: string;
   readonly optional: string;
+  readonly output: string;
   readonly error: string;
-  readonly assetDid: string;
   readonly assetDidUri: string;
   readonly assetDidUriValue: string;
 };
