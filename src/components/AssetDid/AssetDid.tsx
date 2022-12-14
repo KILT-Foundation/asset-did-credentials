@@ -131,7 +131,7 @@ export function AssetDid() {
     <section className={styles.container}>
       <h1>Asset DID</h1>
 
-      <form className={styles.form} id="form" onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <section className={styles.urlInput}>
           <label className={styles.urlInputLabel}>
             OpenSea URL or Asset DID:
@@ -215,31 +215,31 @@ export function AssetDid() {
         <button disabled={disabled} type="submit">
           Continue
         </button>
+
+        <output className={styles.output}>
+          {didInputError.current && (
+            <p className={styles.error}>Invalid input</p>
+          )}
+
+          {!didInputError.current && assetDidUri && (
+            <Fragment>
+              <dl className={styles.assetDidUri}>
+                <dt>Asset DID:</dt>
+                <dd className={styles.assetDidUriValue}>{assetDidUri}</dd>
+              </dl>
+
+              {openSeaUrl && (
+                <a target="_blank" rel="noreferrer" href={openSeaUrl}>
+                  Is this your NFT?
+                </a>
+              )}
+            </Fragment>
+          )}
+        </output>
       </form>
 
-      {didInputError.current && (
-        <output form="form">
-          <p className={styles.error}>Invalid input</p>
-        </output>
-      )}
-
       {!didInputError.current && assetDidUri && (
-        <Fragment>
-          <output form="form" className={styles.assetDid}>
-            <dl className={styles.assetDidUri}>
-              <dt>Asset DID:</dt>
-              <dd className={styles.assetDidUriValue}>{assetDidUri}</dd>
-            </dl>
-
-            {openSeaUrl && (
-              <a target="_blank" rel="noreferrer" href={openSeaUrl}>
-                Is this your NFT?
-              </a>
-            )}
-          </output>
-
-          <AssetDidActions assetDidUri={assetDidUri} />
-        </Fragment>
+        <AssetDidActions assetDidUri={assetDidUri} />
       )}
     </section>
   );

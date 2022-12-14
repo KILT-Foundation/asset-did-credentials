@@ -22,9 +22,9 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
   const [accounts, setAccounts] = useState<InjectedAccount[]>();
   const [paymentAccount, setPaymentAccount] = useState<InjectedAccount>();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState<string>();
 
-  const [subscanUrl, setSubscanUrl] = useState('');
+  const [subscanUrl, setSubscanUrl] = useState<string>();
 
   const [status, setStatus] = useState<
     'none' | 'processing' | 'success' | 'error'
@@ -61,11 +61,11 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
   const handleSubmit = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-      if (!paymentAccount) {
+      if (!paymentAccount || !email) {
         return;
       }
       setStatus('none');
-      setSubscanUrl('');
+      setSubscanUrl(undefined);
 
       try {
         const api = ConfigService.get('api');
@@ -129,10 +129,11 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
       <label className={styles.publishLabel}>
         Choose payment account:
         <select onInput={handleAccountSelect} className={styles.publishInput}>
-          {accounts?.map(({ address, meta: { name, source } }) => (
-            <option key={address} value={address}>{`${
-              name || address
-            } (${source})`}</option>
+          {accounts?.map(({ address, meta: { name = address, source } }) => (
+            <option
+              key={address}
+              value={address}
+            >{`${name} (${source})`}</option>
           ))}
         </select>
       </label>
