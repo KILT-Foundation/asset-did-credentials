@@ -97,19 +97,18 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
           .args[0] as unknown as GenericExtrinsic[];
 
         const addKeyCall = api.tx.did.submitDidCall(
-          addKey.args[0] as unknown as DidDidDetailsDidAuthorizedCallOperation,
-          addKey.args[1] as unknown as DidDidDetailsDidSignature,
+          addKey.args[0] as DidDidDetailsDidAuthorizedCallOperation,
+          addKey.args[1] as DidDidDetailsDidSignature,
         );
 
         const publishCall = api.tx.did.submitDidCall(
-          publish.args[0] as unknown as DidDidDetailsDidAuthorizedCallOperation,
-          publish.args[1] as unknown as DidDidDetailsDidSignature,
+          publish.args[0] as DidDidDetailsDidAuthorizedCallOperation,
+          publish.args[1] as DidDidDetailsDidSignature,
         );
 
         const removeKeyCall = api.tx.did.submitDidCall(
-          removeKey
-            .args[0] as unknown as DidDidDetailsDidAuthorizedCallOperation,
-          removeKey.args[1] as unknown as DidDidDetailsDidSignature,
+          removeKey.args[0] as DidDidDetailsDidAuthorizedCallOperation,
+          removeKey.args[1] as DidDidDetailsDidSignature,
         );
 
         const batch = api.tx.utility.batchAll([
