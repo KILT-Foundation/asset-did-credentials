@@ -129,13 +129,6 @@
   dependencies:
     "@kiltprotocol/type-definitions" "0.30.0-44"
 
-"@kiltprotocol/augment-api@^0.30.0":
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@kiltprotocol/augment-api/-/augment-api-0.30.0.tgz#ea72bbcc8b834c2c27cca87f2de600d542742015"
-  integrity sha512-+c1dTn8FtrvwJGyrDlpmzrRcFqWVTNAbAF4cJ62eDyPAos2mRvIPmwLKQZceECRI/xGcFHa0wBcW+qgTKL2J5A==
-  dependencies:
-    "@kiltprotocol/type-definitions" "0.30.0"
-
 "@kiltprotocol/chain-helpers@0.30.0-44":
   version "0.30.0-44"
   resolved "https://registry.yarnpkg.com/@kiltprotocol/chain-helpers/-/chain-helpers-0.30.0-44.tgz#0853b3df8e0e40b54d1311fd66d8b00e5af9cecc"
@@ -193,11 +186,6 @@
     "@polkadot/util" "^10.0.0"
     "@polkadot/util-crypto" "^10.0.0"
     cbor "^8.0.2"
-
-"@kiltprotocol/type-definitions@0.30.0":
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@kiltprotocol/type-definitions/-/type-definitions-0.30.0.tgz#00e99636a1c4405071021242cd509090c8f14287"
-  integrity sha512-1UpPDjX8PFqTFm3lRRfYUPEY9M8KrbpRinf4q4K843lY5GdTxQaevrVdK9/WCHKywLyDa4tSrlUv9KQjrTP4bg==
 
 "@kiltprotocol/type-definitions@0.30.0-44":
   version "0.30.0-44"

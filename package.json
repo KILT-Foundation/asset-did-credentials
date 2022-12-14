@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@kiltprotocol/asset-did": "0.30.0-44",
-    "@kiltprotocol/augment-api": "^0.30.0",
+    "@kiltprotocol/augment-api": "0.30.0-44",
     "@kiltprotocol/chain-helpers": "0.30.0-44",
     "@kiltprotocol/config": "0.30.0-44",
     "@kiltprotocol/core": "0.30.0-44",
