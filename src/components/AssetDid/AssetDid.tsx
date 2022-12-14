@@ -1,18 +1,26 @@
-import { ChangeEvent, FormEvent, useCallback, useMemo, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  Fragment,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 
 import { AssetDidUri } from '@kiltprotocol/types';
 
-import './App.css';
-
 import { parse, validateUri } from '@kiltprotocol/asset-did';
+
+import * as styles from './AssetDid.module.css';
 
 import {
   getOpenSeaUrl,
   isOpenSeaUrl,
   openSeaChainIds,
   parseOpenSeaUrl,
-} from './utilities/openSea';
-import { useBooleanState } from './utilities/useBooleanState';
+} from '../../utilities/openSea';
+import { useBooleanState } from '../../utilities/useBooleanState';
+import { AssetDidActions } from '../AssetDidActions/AssetDidActions';
 
 function isAssetDidUri(uri: string): uri is AssetDidUri {
   try {
@@ -30,7 +38,7 @@ const initialValues = {
   assetInstance: '',
 };
 
-export function App() {
+export function AssetDid() {
   const [assetDidInput, setAssetDidInput] = useState(initialValues);
   const { chainId, assetNamespace, assetReference, assetInstance } =
     assetDidInput;
@@ -120,20 +128,20 @@ export function App() {
   const disabled = !chainId || !assetNamespace || !assetReference;
 
   return (
-    <section className="container">
-      <h1 className="heading">Asset DID</h1>
+    <section className={styles.container}>
+      <h1>Asset DID</h1>
 
-      <form className="form" id="form" onSubmit={handleSubmit}>
-        <section className="urlInput">
-          <label className="urlInputLabel">
+      <form className={styles.form} id="form" onSubmit={handleSubmit}>
+        <section className={styles.urlInput}>
+          <label className={styles.urlInputLabel}>
             OpenSea URL or Asset DID:
-            <input className="urlInputValue" onChange={handleUrlInput} />
+            <input className={styles.urlInputValue} onChange={handleUrlInput} />
           </label>
         </section>
 
-        <section className="didInput">
+        <section className={styles.didInput}>
           {urlInputError.current && (
-            <p className="urlError">
+            <p className={styles.urlError}>
               Unable to parse URL. Please enter the asset data manually. See{' '}
               <a
                 href="https://github.com/KILTprotocol/spec-asset-did"
@@ -146,12 +154,12 @@ export function App() {
             </p>
           )}
           <span>did:asset: </span>
-          <label className="didInputLabel">
+          <label className={styles.didInputLabel}>
             Chain ID
             <input
               required
               list="chainIds"
-              className="didInputValue"
+              className={styles.didInputValue}
               name="chainId"
               value={chainId}
               onChange={handleDidInput}
@@ -163,12 +171,12 @@ export function App() {
             </datalist>
           </label>
           .
-          <label className="didInputLabel">
+          <label className={styles.didInputLabel}>
             Token Standard
             <input
               required
               list="standards"
-              className="didInputValue"
+              className={styles.didInputValue}
               name="assetNamespace"
               value={assetNamespace}
               onChange={handleDidInput}
@@ -179,23 +187,24 @@ export function App() {
             </datalist>
           </label>
           :
-          <label className="didInputLabel">
+          <label className={styles.didInputLabel}>
             Contract Address
             <input
               required
-              className="didInputValue"
+              className={styles.didInputValue}
               name="assetReference"
               value={assetReference}
               onChange={handleDidInput}
             />
           </label>
           :
-          <label className="didInputLabel">
-            <p className="tokenID">
-              <span>Token ID</span> <span className="optional">(Optional)</span>
+          <label className={styles.didInputLabel}>
+            <p className={styles.tokenID}>
+              <span>Token ID</span>{' '}
+              <span className={styles.optional}>(Optional)</span>
             </p>
             <input
-              className="didInputValue"
+              className={styles.didInputValue}
               name="assetInstance"
               value={assetInstance}
               onChange={handleDidInput}
@@ -208,12 +217,16 @@ export function App() {
         </button>
       </form>
 
-      <output form="form">
-        {didInputError.current && <p className="error">Invalid input</p>}
+      {didInputError.current && (
+        <output form="form">
+          <p className={styles.error}>Invalid input</p>
+        </output>
+      )}
 
-        {!didInputError.current && assetDidUri && (
-          <section>
-            <dl className="assetDidUri">
+      {!didInputError.current && assetDidUri && (
+        <Fragment>
+          <output form="form" className={styles.assetDid}>
+            <dl className={styles.assetDidUri}>
               <dt>Asset DID:</dt>
               <dd>{assetDidUri}</dd>
             </dl>
@@ -223,10 +236,11 @@ export function App() {
                 Is this your NFT?
               </a>
             )}
-          </section>
-          // TODO: Issue public credential: https://kiltprotocol.atlassian.net/browse/SK-1550
-        )}
-      </output>
+          </output>
+
+          <AssetDidActions assetDidUri={assetDidUri} />
+        </Fragment>
+      )}
     </section>
   );
 }

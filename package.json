@@ -11,12 +11,21 @@
     "dev": "parcel --open",
     "build": "parcel build",
     "test": "tsc --noEmit",
-    "lint": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
+    "lint": "yarn run lint-css && yarn run lint-js",
+    "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
+    "lint-css": "stylelint --fix \"src/**/*.css\"",
+    "css": "tcm --pattern 'src/**/*.module.css' && eslint --fix --config ./.eslintrc.json \"src/**/*.css.d.ts\"",
     "prettify": "prettier --write \"src/**/*.ts*\""
   },
   "dependencies": {
     "@kiltprotocol/asset-did": "0.30.0-44",
+    "@kiltprotocol/augment-api": "^0.30.0",
+    "@kiltprotocol/chain-helpers": "0.30.0-44",
+    "@kiltprotocol/config": "0.30.0-44",
+    "@kiltprotocol/core": "0.30.0-44",
     "@kiltprotocol/types": "0.30.0-44",
+    "@polkadot/extension-dapp": "^0.44.6",
+    "@polkadot/types": "9.10.1",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -34,10 +43,17 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "events": "^3.1.0",
     "parcel": "^2.8.0",
     "prettier": "^2.8.0",
     "process": "^0.11.10",
-    "typescript": "^4.9.3"
+    "stream-browserify": "^3.0.0",
+    "stylelint": "^14.16.0",
+    "stylelint-config-css-modules": "^4.1.0",
+    "stylelint-config-standard": "^29.0.0",
+    "typed-css-modules": "^0.7.2",
+    "typescript": "^4.9.3",
+    "typescript-plugin-css-modules": "^4.1.1"
   },
   "targets": {
     "default": {
