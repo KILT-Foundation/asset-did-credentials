@@ -1,7 +1,3 @@
-import {
-  DidDidDetailsDidAuthorizedCallOperation,
-  DidDidDetailsDidSignature,
-} from '@kiltprotocol/augment-api';
 import { Blockchain } from '@kiltprotocol/chain-helpers';
 import { CType, PublicCredential } from '@kiltprotocol/core';
 import { AssetDidUri, IAssetClaim } from '@kiltprotocol/types';
@@ -10,7 +6,6 @@ import {
   web3Enable,
   web3FromAddress,
 } from '@polkadot/extension-dapp';
-import { GenericExtrinsic } from '@polkadot/types';
 import { find } from 'lodash-es';
 import { FormEvent, Fragment, useCallback, useEffect, useState } from 'react';
 
@@ -91,37 +86,11 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
           paymentAccount.address,
         );
 
-        const extrinsic = api.createType('Extrinsic', signed);
-
-        const [addKey, publish, removeKey] = extrinsic
-          .args[0] as unknown as GenericExtrinsic[];
-
-        const addKeyCall = api.tx.did.submitDidCall(
-          addKey.args[0] as DidDidDetailsDidAuthorizedCallOperation,
-          addKey.args[1] as DidDidDetailsDidSignature,
-        );
-
-        const publishCall = api.tx.did.submitDidCall(
-          publish.args[0] as DidDidDetailsDidAuthorizedCallOperation,
-          publish.args[1] as DidDidDetailsDidSignature,
-        );
-
-        const removeKeyCall = api.tx.did.submitDidCall(
-          removeKey.args[0] as DidDidDetailsDidAuthorizedCallOperation,
-          removeKey.args[1] as DidDidDetailsDidSignature,
-        );
-
-        const batch = api.tx.utility.batchAll([
-          addKeyCall,
-          publishCall,
-          removeKeyCall,
-        ]);
-
         const { signer } = await web3FromAddress(paymentAccount.address);
 
-        const signedTx = await batch.signAsync(paymentAccount.address, {
-          signer,
-        });
+        const signedTx = await api
+          .tx(signed)
+          .signAsync(paymentAccount.address, { signer });
 
         setStatus('processing');
 
