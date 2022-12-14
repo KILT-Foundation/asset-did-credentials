@@ -1,0 +1,72 @@
+.container {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+}
+
+.actions::after {
+  content: ' ';
+  flex: 1;
+  border-block-end: 1px solid black;
+}
+
+.tab {
+  cursor: pointer;
+  background: transparent;
+  padding: 0.5rem 4rem;
+  font-weight: bolder;
+}
+
+.active {
+  composes: tab;
+  border-inline: 1px solid black;
+  border-block-start: 1px solid black;
+  border-block-end: none;
+}
+
+.inactive {
+  composes: tab;
+  border-inline: none;
+  border-block-start: none;
+  border-block-end: 1px solid black;
+}
+
+.publish {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-block: 2rem;
+  align-items: flex-start;
+}
+
+.publishLabel {
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 4rem;
+  margin-block: 0.5rem;
+  text-align: right;
+}
+
+.publishInput {
+  width: 55%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.submit {
+  align-self: center;
+  margin: 1rem;
+}
+
+.statusContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block-start: 1rem;
+  margin-block: 1rem;
+  border-block-start: 1px solid black;
+}

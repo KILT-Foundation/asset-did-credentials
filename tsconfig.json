@@ -7,7 +7,12 @@
     "typeRoots": ["./node_modules/@types"],
     "strict": true,
     "jsx": "react-jsx",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ]
   },
   "include": ["./src/**/*"]
 }

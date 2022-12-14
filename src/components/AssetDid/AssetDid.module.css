@@ -19,8 +19,6 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-block-end: 2rem;
-  border-block-end: 1px solid black;
 }
 
 .urlInput {
@@ -66,8 +64,6 @@ body {
 
 .didInputValue {
   margin: 0.25rem 0 0;
-  border: 1px solid black;
-  height: 1.25rem;
   min-width: 10rem;
 }
 
@@ -80,6 +76,15 @@ body {
   font-style: italic;
 }
 
+.output {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-block-start: 1px solid black;
+  padding-block-start: 1rem;
+  margin-block: 2rem;
+}
 .error {
   color: red;
 }
@@ -87,4 +92,8 @@ body {
 .assetDidUri {
   display: flex;
   color: green;
+}
+
+.assetDidUriValue {
+  word-break: break-word;
 }
