@@ -13,7 +13,8 @@
     "test": "tsc --noEmit",
     "lint": "yarn run lint-css && yarn run lint-js",
     "lint-js": "eslint --max-warnings 0 --config ./.eslintrc.json \"src/**/*.ts*\"",
-    "lint-css": "stylelint --fix \"src/**/*.css\"",
+    "lint-css": "stylelint \"src/**/*.css\"",
+    "fix-css": "stylelint --fix \"src/**/*.css\"",
     "css": "tcm --pattern 'src/**/*.module.css' && eslint --fix --config ./.eslintrc.json \"src/**/*.css.d.ts\"",
     "prettify": "prettier --write \"src/**/*.ts*\""
   },
