@@ -1,6 +1,10 @@
 import { Blockchain } from '@kiltprotocol/chain-helpers';
 import { CType, PublicCredential } from '@kiltprotocol/core';
-import { AssetDidUri, IAssetClaim } from '@kiltprotocol/types';
+import {
+  AssetDidUri,
+  IAssetClaim,
+  IPublicCredential,
+} from '@kiltprotocol/types';
 import {
   web3Accounts,
   web3Enable,
@@ -15,6 +19,82 @@ import * as styles from './AssetDidActions.module.css';
 
 import { emailCType } from '../../utilities/cTypes';
 import { getSubscanHost } from '../../utilities/subscanHost';
+
+function getCTypeTitle(hash: string) {
+  return emailCType.$id.includes(hash) ? emailCType.title : 'Unknown';
+}
+
+function Lookup({ assetDidUri }: { assetDidUri: AssetDidUri }) {
+  const [credentials, setCredentials] = useState<IPublicCredential[]>();
+
+  useEffect(() => {
+    (async () => {
+      const api = ConfigService.get('api');
+      const chainResult = await api.call.publicCredentials.getBySubject(
+        assetDidUri,
+        null,
+      );
+
+      if (chainResult.isEmpty) {
+        setCredentials([]);
+        return;
+      }
+
+      setCredentials(await PublicCredential.credentialsFromChain(chainResult));
+    })();
+  }, [assetDidUri]);
+
+  if (!credentials) {
+    // blockchain data pending
+    return null;
+  }
+
+  return (
+    <section className={styles.lookup}>
+      {credentials.length === 0 && (
+        <p className={styles.lookupInfo}>
+          No public credentials for this Asset DID
+        </p>
+      )}
+
+      {credentials.length > 0 && (
+        <Fragment>
+          <h2 className={styles.lookupInfo}>Attached Public Credentials</h2>
+          <table className={styles.credentials}>
+            <thead>
+              <tr>
+                <th>Attester</th>
+                <th>CType</th>
+                <th>Claim</th>
+                <th>Block</th>
+              </tr>
+            </thead>
+            <tbody>
+              {credentials.map(
+                ({ id, attester, cTypeHash, claims, blockNumber }) => (
+                  <tr key={id}>
+                    <td>{attester}</td>
+                    <td>{getCTypeTitle(cTypeHash)}</td>
+                    <td>{String(Object.values(claims)[0])}</td>
+                    <td>
+                      <a
+                        href={`https://kilt-testnet.subscan.io/block/${blockNumber.toNumber()}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {blockNumber.toNumber()}
+                      </a>
+                    </td>
+                  </tr>
+                ),
+              )}
+            </tbody>
+          </table>
+        </Fragment>
+      )}
+    </section>
+  );
+}
 
 type InjectedAccount = Awaited<ReturnType<typeof web3Accounts>>[number];
 
@@ -32,16 +112,13 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
 
   useEffect(() => {
     (async () => {
-      const api = ConfigService.get('api');
-      const genesisHash = api.genesisHash.toHex();
       await web3Enable('Asset DIDs');
       const allAccounts = await web3Accounts();
-      const kiltAccounts = allAccounts.filter(
-        (account) =>
-          !account.meta.genesisHash || account.meta.genesisHash === genesisHash,
+      const sporranAccounts = allAccounts.filter(
+        (account) => account.meta.source === 'Sporran',
       );
-      setAccounts(kiltAccounts);
-      setPaymentAccount(kiltAccounts[0]);
+      setAccounts(sporranAccounts);
+      setPaymentAccount(sporranAccounts[0]);
     })();
   }, []);
 
@@ -129,11 +206,10 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
       <label className={styles.publishLabel}>
         Choose payment account:
         <select onInput={handleAccountSelect} className={styles.publishInput}>
-          {accounts?.map(({ address, meta: { name = address, source } }) => (
-            <option
-              key={address}
-              value={address}
-            >{`${name} (${source})`}</option>
+          {accounts?.map(({ address, meta: { name = address } }) => (
+            <option key={address} value={address}>
+              {name}
+            </option>
           ))}
         </select>
       </label>
@@ -196,8 +272,7 @@ export function AssetDidActions({
 
       {action === 'publish' && <Publish assetDidUri={assetDidUri} />}
 
-      {/* TODO: https://kiltprotocol.atlassian.net/browse/SK-1523 */}
-      {action === 'lookup' && <div />}
+      {action === 'lookup' && <Lookup assetDidUri={assetDidUri} />}
     </section>
   );
 }
