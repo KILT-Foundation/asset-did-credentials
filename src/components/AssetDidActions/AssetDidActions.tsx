@@ -49,6 +49,8 @@ function Lookup({ assetDidUri }: { assetDidUri: AssetDidUri }) {
     return null;
   }
 
+  const subscanHost = getSubscanHost();
+
   return (
     <section className={styles.lookup}>
       {credentials.length === 0 && (
@@ -78,7 +80,7 @@ function Lookup({ assetDidUri }: { assetDidUri: AssetDidUri }) {
                     <td>{String(Object.values(claims)[0])}</td>
                     <td>
                       <a
-                        href={`https://kilt-testnet.subscan.io/block/${blockNumber.toNumber()}`}
+                        href={`${subscanHost}/block/${blockNumber.toNumber()}`}
                         target="_blank"
                         rel="noreferrer"
                       >
