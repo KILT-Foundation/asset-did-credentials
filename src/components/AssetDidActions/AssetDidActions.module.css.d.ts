@@ -9,5 +9,8 @@ declare const styles: {
   readonly publishInput: string;
   readonly submit: string;
   readonly statusContainer: string;
+  readonly lookup: string;
+  readonly lookupInfo: string;
+  readonly credentials: string;
 };
 export = styles;
