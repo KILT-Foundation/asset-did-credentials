@@ -29,18 +29,9 @@ function Lookup({ assetDidUri }: { assetDidUri: AssetDidUri }) {
 
   useEffect(() => {
     (async () => {
-      const api = ConfigService.get('api');
-      const chainResult = await api.call.publicCredentials.getBySubject(
-        assetDidUri,
-        null,
+      setCredentials(
+        await PublicCredential.fetchCredentialsFromChain(assetDidUri),
       );
-
-      if (chainResult.isEmpty) {
-        setCredentials([]);
-        return;
-      }
-
-      setCredentials(await PublicCredential.credentialsFromChain(chainResult));
     })();
   }, [assetDidUri]);
 
