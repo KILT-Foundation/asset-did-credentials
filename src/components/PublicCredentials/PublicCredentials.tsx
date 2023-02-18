@@ -15,7 +15,7 @@ import { FormEvent, Fragment, useCallback, useEffect, useState } from 'react';
 
 import { ConfigService } from '@kiltprotocol/config';
 
-import * as styles from './AssetDidActions.module.css';
+import * as styles from './PublicCredentials.module.css';
 
 import { emailCType } from '../../utilities/cTypes';
 import { getSubscanHost } from '../../utilities/subscanHost';
@@ -239,7 +239,7 @@ function Publish({ assetDidUri }: { assetDidUri: AssetDidUri }) {
   );
 }
 
-export function AssetDidActions({
+export function PublicCredentials({
   assetDidUri,
 }: {
   assetDidUri: AssetDidUri;

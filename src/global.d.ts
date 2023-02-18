@@ -1,12 +1,14 @@
 export {};
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ethereum: any;
     kilt: {
       sporran: {
         signExtrinsicWithDid(
-          extrinsic: HexString,
+          extrinsic: string,
           signer: string,
-        ): Promise<{ signed: HexString; didKeyUri: string }>;
+        ): Promise<{ signed: string; didKeyUri: string }>;
       };
     };
   }

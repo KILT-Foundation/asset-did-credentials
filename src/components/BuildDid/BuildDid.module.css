@@ -1,0 +1,85 @@
+.connect {
+  margin: 1rem 0 0;
+  padding: 0.25rem 2rem;
+  cursor: pointer;
+}
+
+.nftListHeading {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.nftList {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.select {
+  background: none;
+  padding: 0;
+  border: none;
+  border-radius: 1rem;
+}
+
+.selected {
+  composes: select;
+  outline: 0.5rem solid green;
+}
+
+.nft {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 10rem;
+  height: 13rem;
+  margin: 0;
+  border: 1px solid black;
+  border-radius: inherit;
+  font-size: 0.9rem;
+  overflow: hidden;
+}
+
+.nftImage {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-bottom: 1px solid black;
+}
+
+.nftName {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+}
+
+.urlInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-block-end: 2rem;
+  border-block-end: 1px solid black;
+}
+
+.urlInputLabel {
+  display: flex;
+  gap: 2rem;
+  width: 80%;
+}
+
+.urlInputValue {
+  flex: 1;
+}
+
+.error {
+  color: red;
+  margin: 1rem 0 0;
+}

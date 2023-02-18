@@ -1,6 +1,5 @@
 import { parse } from '@kiltprotocol/asset-did';
 import { AssetDidUri, Caip2ChainId } from '@kiltprotocol/types';
-
 import { invert } from 'lodash-es';
 
 type OpenSeaChain =
@@ -10,7 +9,8 @@ type OpenSeaChain =
   | 'ethereum'
   | 'klaytn'
   | 'matic'
-  | 'optimism';
+  | 'optimism'
+  | 'goerli';
 
 export const openSeaChainIds: Record<OpenSeaChain, Caip2ChainId> = {
   arbitrum: 'eip155:42161',
@@ -20,6 +20,7 @@ export const openSeaChainIds: Record<OpenSeaChain, Caip2ChainId> = {
   klaytn: 'eip155:8217',
   matic: 'eip155:137',
   optimism: 'eip155:10',
+  goerli: 'eip155:5', // testnet
 };
 
 export type OpenSeaUrl =
@@ -68,6 +69,11 @@ export function getOpenSeaUrl(did: AssetDidUri) {
 
   const chainName = openSeaChainNames[chainId];
   if (chainName) {
-    return `https://opensea.io/assets/${chainName}/${assetReference}/${assetInstance}`;
+    const base =
+      chainName === 'goerli'
+        ? 'https://testnets.opensea.io'
+        : 'https://opensea.io';
+
+    return `${base}/assets/${chainName}/${assetReference}/${assetInstance}`;
   }
 }
