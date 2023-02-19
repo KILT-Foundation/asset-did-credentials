@@ -57,8 +57,6 @@ function useMetamask(reset: () => void) {
   const [chainId, setChainId] = useState<SupportedCaip2ChainId>();
   const [account, setAccount] = useState<string>();
 
-  const [NFTs, setNFTs] = useState<NFT[]>();
-
   const handleAccountsChanged = useCallback(
     (accounts: string) => {
       if (accounts.length === 0) {
@@ -110,6 +108,12 @@ function useMetamask(reset: () => void) {
     [handleAccountsChanged],
   );
 
+  return { hasMetaMask, chainId, account, handleConnect };
+}
+
+function useNFTs(chainId?: SupportedCaip2ChainId, account?: string) {
+  const [NFTs, setNFTs] = useState<NFT[]>();
+
   useEffect(() => {
     if (!account || !chainId) {
       return;
@@ -136,7 +140,7 @@ function useMetamask(reset: () => void) {
     })();
   }, [account, chainId]);
 
-  return { hasMetaMask, chainId, account, NFTs, handleConnect };
+  return { NFTs };
 }
 
 export function BuildDid({
@@ -146,8 +150,9 @@ export function BuildDid({
   prefillDidInput: Dispatch<SetStateAction<AssetDidElements>>;
   reset: () => void;
 }) {
-  const { hasMetaMask, chainId, account, NFTs, handleConnect } =
-    useMetamask(reset);
+  const { hasMetaMask, chainId, account, handleConnect } = useMetamask(reset);
+
+  const { NFTs } = useNFTs(chainId, account);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
