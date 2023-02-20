@@ -82,7 +82,7 @@ function useMetamask(reset: () => void) {
       const chainId = (await ethereum.request({
         method: 'eth_chainId',
       })) as string;
-      console.log(chainId);
+
       if (!isSupportedChain(chainId)) {
         return;
       }
