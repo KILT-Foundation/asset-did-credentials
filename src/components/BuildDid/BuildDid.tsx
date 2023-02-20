@@ -111,14 +111,20 @@ function useMetamask(reset: () => void) {
   return { hasMetaMask, chainId, account, handleConnect };
 }
 
-function useNFTs(chainId?: SupportedCaip2ChainId, account?: string) {
+function NFTSelect({
+  account,
+  chainId,
+  reset,
+  prefillDidInput,
+}: {
+  account: string;
+  chainId: SupportedCaip2ChainId;
+  reset: () => void;
+  prefillDidInput: Dispatch<SetStateAction<AssetDidElements>>;
+}) {
   const [NFTs, setNFTs] = useState<NFT[]>();
 
   useEffect(() => {
-    if (!account || !chainId) {
-      return;
-    }
-
     (async () => {
       try {
         const chain = supportedApiChains[chainId];
@@ -140,20 +146,6 @@ function useNFTs(chainId?: SupportedCaip2ChainId, account?: string) {
     })();
   }, [account, chainId]);
 
-  return { NFTs };
-}
-
-export function BuildDid({
-  prefillDidInput,
-  reset,
-}: {
-  prefillDidInput: Dispatch<SetStateAction<AssetDidElements>>;
-  reset: () => void;
-}) {
-  const { hasMetaMask, chainId, account, handleConnect } = useMetamask(reset);
-
-  const { NFTs } = useNFTs(chainId, account);
-
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
@@ -170,6 +162,68 @@ export function BuildDid({
       assetInstance: token_id,
     });
   }, [selectedIndex, chainId, NFTs, reset, prefillDidInput]);
+
+  return (
+    <section>
+      {account && NFTs?.length === 0 && (
+        <p className={styles.error}>
+          No assets found. Please try another account or enter the asset data
+          manually. See{' '}
+          <a
+            href="https://github.com/KILTprotocol/spec-asset-did#asset-decentralized-identifiers-did-method-specification"
+            target="_blank"
+            rel="noreferrer"
+          >
+            specification
+          </a>{' '}
+          for details.
+        </p>
+      )}
+
+      {NFTs && NFTs?.length > 0 && (
+        <Fragment>
+          <h2 className={styles.nftListHeading}>Select NFT</h2>
+          <ul className={styles.nftList}>
+            {NFTs.map(
+              (
+                { contract_address, token_id, name, cached_file_url },
+                index,
+              ) => (
+                <li key={`${contract_address}:${token_id}`}>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedIndex(index)}
+                    className={
+                      index === selectedIndex ? styles.selected : styles.select
+                    }
+                  >
+                    <figure className={styles.nft}>
+                      <img
+                        className={styles.nftImage}
+                        src={cached_file_url}
+                        alt={name}
+                      />
+                      <figcaption className={styles.nftName}>{name}</figcaption>
+                    </figure>
+                  </button>
+                </li>
+              ),
+            )}
+          </ul>
+        </Fragment>
+      )}
+    </section>
+  );
+}
+
+export function BuildDid({
+  prefillDidInput,
+  reset,
+}: {
+  prefillDidInput: Dispatch<SetStateAction<AssetDidElements>>;
+  reset: () => void;
+}) {
+  const { hasMetaMask, chainId, account, handleConnect } = useMetamask(reset);
 
   const urlInputError = useBooleanState();
 
@@ -243,52 +297,13 @@ export function BuildDid({
         </section>
       )}
 
-      {account && NFTs?.length === 0 && (
-        <p className={styles.error}>
-          No assets found. Please try another account or enter the asset data
-          manually. See{' '}
-          <a
-            href="https://github.com/KILTprotocol/spec-asset-did#asset-decentralized-identifiers-did-method-specification"
-            target="_blank"
-            rel="noreferrer"
-          >
-            specification
-          </a>{' '}
-          for details.
-        </p>
-      )}
-
-      {NFTs && NFTs?.length > 0 && (
-        <Fragment>
-          <h2 className={styles.nftListHeading}>Select NFT</h2>
-          <ul className={styles.nftList}>
-            {NFTs.map(
-              (
-                { contract_address, token_id, name, cached_file_url },
-                index,
-              ) => (
-                <li key={`${contract_address}:${token_id}`}>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedIndex(index)}
-                    className={
-                      index === selectedIndex ? styles.selected : styles.select
-                    }
-                  >
-                    <figure className={styles.nft}>
-                      <img
-                        className={styles.nftImage}
-                        src={cached_file_url}
-                        alt={name}
-                      />
-                      <figcaption className={styles.nftName}>{name}</figcaption>
-                    </figure>
-                  </button>
-                </li>
-              ),
-            )}
-          </ul>
-        </Fragment>
+      {account && chainId && (
+        <NFTSelect
+          account={account}
+          chainId={chainId}
+          reset={reset}
+          prefillDidInput={prefillDidInput}
+        />
       )}
     </Fragment>
   );
