@@ -127,7 +127,7 @@ export function AssetDid() {
       const key = event.currentTarget.name;
       const value = event.currentTarget.value;
 
-      if (Object.keys(didInput).includes(key)) {
+      if (key in didInput) {
         setDidInput({
           ...didInput,
           [key]: value,

@@ -18,12 +18,13 @@ import { isAssetDidUri } from '../../utilities/isAssetDidUri';
 import { isOpenSeaUrl, parseOpenSeaUrl } from '../../utilities/openSea';
 import { AssetDidElements } from '../AssetDid/AssetDid';
 
+const API_KEY = '9b63fb73-58f2-4a21-9169-7c95ddf916a2';
+
 interface NFT {
   contract_address: string;
   token_id: string;
   name?: string;
   cached_file_url?: string;
-  cached_animation_url?: string;
 }
 
 type SupportedMetaMaskChainId = '0x1' | '0x5' | '0x89';
@@ -58,7 +59,7 @@ function useMetamask(reset: () => void) {
   const [account, setAccount] = useState<string>();
 
   const handleAccountsChanged = useCallback(
-    (accounts: string) => {
+    (accounts: string[]) => {
       if (accounts.length === 0) {
         return;
       }
@@ -134,7 +135,7 @@ function NFTSelect({
         url.searchParams.set('page_size', '5');
         const { response, nfts } = await (
           await fetch(url, {
-            headers: { Authorization: '9b63fb73-58f2-4a21-9169-7c95ddf916a2' },
+            headers: { Authorization: API_KEY },
           })
         ).json();
 
