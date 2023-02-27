@@ -18,8 +18,6 @@ import { isAssetDidUri } from '../../utilities/isAssetDidUri';
 import { isOpenSeaUrl, parseOpenSeaUrl } from '../../utilities/openSea';
 import { AssetDidElements } from '../AssetDid/AssetDid';
 
-const API_KEY = '9b63fb73-58f2-4a21-9169-7c95ddf916a2';
-
 interface NFT {
   contract_address: string;
   token_id: string;
@@ -135,7 +133,7 @@ function NFTSelect({
         url.searchParams.set('page_size', '5');
         const { response, nfts } = await (
           await fetch(url, {
-            headers: { Authorization: API_KEY },
+            headers: { Authorization: process.env.API_KEY as string },
           })
         ).json();
 
