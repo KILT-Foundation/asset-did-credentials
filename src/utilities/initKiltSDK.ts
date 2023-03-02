@@ -1,5 +1,4 @@
-import { ConfigService } from '@kiltprotocol/config';
-import { connect } from '@kiltprotocol/core';
+import { ConfigService, connect } from '@kiltprotocol/sdk-js';
 
 export async function initKiltSDK(): Promise<void> {
   const endpoint = process.env.CHAIN_ENDPOINT;
