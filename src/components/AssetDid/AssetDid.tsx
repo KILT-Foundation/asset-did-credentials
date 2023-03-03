@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 
-import { AssetDidUri } from '@kiltprotocol/types';
+import { AssetDidUri } from '@kiltprotocol/sdk-js';
 
 import * as styles from './AssetDid.module.css';
 

@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 
-import { parse } from '@kiltprotocol/asset-did';
+import * as AssetDid from '@kiltprotocol/asset-did';
 
 import * as styles from './BuildDid.module.css';
 
@@ -239,7 +239,7 @@ export function BuildDid({
 
       if (isAssetDidUri(input)) {
         const { chainId, assetNamespace, assetReference, assetInstance } =
-          parse(input);
+          AssetDid.parse(input);
         prefillDidInput({
           chainId,
           assetNamespace,

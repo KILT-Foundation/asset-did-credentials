@@ -1,5 +1,5 @@
 import { parse } from '@kiltprotocol/asset-did';
-import { AssetDidUri, Caip2ChainId } from '@kiltprotocol/types';
+import { AssetDidUri, Caip2ChainId } from '@kiltprotocol/sdk-js';
 import { invert } from 'lodash-es';
 
 type OpenSeaChain =

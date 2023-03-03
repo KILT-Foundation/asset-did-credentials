@@ -19,11 +19,8 @@
     "prettify": "prettier --write \"src/**/*.ts*\""
   },
   "dependencies": {
-    "@kiltprotocol/asset-did": "0.31.0",
-    "@kiltprotocol/chain-helpers": "0.31.0",
-    "@kiltprotocol/config": "0.31.0",
-    "@kiltprotocol/core": "0.31.0",
-    "@kiltprotocol/types": "0.31.0",
+    "@kiltprotocol/asset-did": "^0.31.1",
+    "@kiltprotocol/sdk-js": "^0.31.1",
     "@polkadot/extension-dapp": "^0.44.8",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",

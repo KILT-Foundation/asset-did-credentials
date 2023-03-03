@@ -1,10 +1,3 @@
-import { Blockchain } from '@kiltprotocol/chain-helpers';
-import { CType, PublicCredential } from '@kiltprotocol/core';
-import {
-  AssetDidUri,
-  IAssetClaim,
-  IPublicCredential,
-} from '@kiltprotocol/types';
 import {
   web3Accounts,
   web3Enable,
@@ -13,15 +6,53 @@ import {
 import { find } from 'lodash-es';
 import { FormEvent, Fragment, useCallback, useEffect, useState } from 'react';
 
-import { ConfigService } from '@kiltprotocol/config';
+import {
+  AssetDidUri,
+  Blockchain,
+  ConfigService,
+  CType,
+  IAssetClaim,
+  IPublicCredential,
+  PublicCredential,
+} from '@kiltprotocol/sdk-js';
 
 import * as styles from './PublicCredentials.module.css';
 
 import { emailCType } from '../../utilities/cTypes';
 import { getSubscanHost } from '../../utilities/subscanHost';
 
-function getCTypeTitle(hash: string) {
-  return emailCType.$id.includes(hash) ? emailCType.title : 'Unknown';
+function Credential({ credential }: { credential: IPublicCredential }) {
+  const { attester, cTypeHash, claims, blockNumber } = credential;
+  const subscanHost = getSubscanHost();
+  const [title, setTitle] = useState<string>();
+
+  useEffect(() => {
+    (async () => {
+      const { title } = await CType.fetchFromChain(CType.hashToId(cTypeHash));
+      setTitle(title);
+    })();
+  }, [cTypeHash]);
+
+  if (!title) {
+    return null; // chain data pending;
+  }
+
+  return (
+    <tr>
+      <td>{attester}</td>
+      <td>{title}</td>
+      <td>{String(Object.values(claims)[0])}</td>
+      <td>
+        <a
+          href={`${subscanHost}/block/${blockNumber.toNumber()}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {blockNumber.toNumber()}
+        </a>
+      </td>
+    </tr>
+  );
 }
 
 function Lookup({ assetDidUri }: { assetDidUri: AssetDidUri }) {
@@ -39,8 +70,6 @@ function Lookup({ assetDidUri }: { assetDidUri: AssetDidUri }) {
     // blockchain data pending
     return null;
   }
-
-  const subscanHost = getSubscanHost();
 
   return (
     <section className={styles.lookup}>
@@ -63,24 +92,9 @@ function Lookup({ assetDidUri }: { assetDidUri: AssetDidUri }) {
               </tr>
             </thead>
             <tbody>
-              {credentials.map(
-                ({ id, attester, cTypeHash, claims, blockNumber }) => (
-                  <tr key={id}>
-                    <td>{attester}</td>
-                    <td>{getCTypeTitle(cTypeHash)}</td>
-                    <td>{String(Object.values(claims)[0])}</td>
-                    <td>
-                      <a
-                        href={`${subscanHost}/block/${blockNumber.toNumber()}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {blockNumber.toNumber()}
-                      </a>
-                    </td>
-                  </tr>
-                ),
-              )}
+              {credentials.map((credential) => (
+                <Credential key={credential.id} credential={credential} />
+              ))}
             </tbody>
           </table>
         </Fragment>
