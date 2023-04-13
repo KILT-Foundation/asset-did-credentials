@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=v16.18.1"
+    "node": ">=v18.16.0"
   },
   "scripts": {
     "dev": "parcel --open",
