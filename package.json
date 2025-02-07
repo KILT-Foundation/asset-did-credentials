@@ -1,7 +1,7 @@
 {
   "name": "asset-did-credentials",
   "version": "1.0.0",
-  "repository": "git@github.com:BTE-Trusted-Entity/asset-did-credentials.git",
+  "repository": "git@github.com:KILT-Foundation/asset-did-credentials.git",
   "private": true,
   "type": "module",
   "engines": {
